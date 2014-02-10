@@ -29,7 +29,7 @@ module Bosh::Dev
 
       @stemcell_path = stemcell_builder_command.build
 
-      File.exist?(@stemcell_path) || raise("#{@stemcell_path} does not exist")
+      File.exist?(@stemcell_path) || raise("#{@stemcell_path} does not exist") unless @stemcell_path.include?('dummy')
 
       @stemcell_path
     end

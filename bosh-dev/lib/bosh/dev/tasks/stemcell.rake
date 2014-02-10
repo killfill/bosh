@@ -11,11 +11,11 @@ namespace :stemcell do
   task :build, [:infrastructure_name, :operating_system_name, :agent_name] do |_, args|
     require 'bosh/dev/stemcell_builder'
 
+    mkdir_p('tmp')
     stemcell_builder = Bosh::Dev::StemcellBuilder.for_candidate_build(
       args.infrastructure_name, args.operating_system_name, args.agent_name)
     stemcell_path = stemcell_builder.build_stemcell
 
-    mkdir_p('tmp')
-    cp(stemcell_path, File.join('tmp', File.basename(stemcell_path)))
+    cp(stemcell_path, File.join('tmp', File.basename(stemcell_path))) if File.exists?(stemcell_path)
   end
 end

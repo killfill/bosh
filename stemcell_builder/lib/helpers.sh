@@ -57,6 +57,20 @@ EOS
   enable $chroot/usr/sbin/invoke-rc.d
 }
 
+#If we are dummy, run the commands in the vm, not in a chroot.
+if [[ $dir =~ .*dummy.* ]]; then
+
+  export dont_chroot='true'
+
+  function run_in_chroot {
+    local script=$1  #as chroot is a space, bash doesnt 'pass it'
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin http_proxy=${http_proxy:-} bash -e -c "$script"
+  }
+
+  #Some stages uses the $chroot var. Is empty, prelude_bosh.bash will define it, not ok for this case.
+  export chroot=' '
+fi
+
 declare -a on_exit_items
 
 function on_exit {

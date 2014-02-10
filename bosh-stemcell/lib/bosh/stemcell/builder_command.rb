@@ -45,9 +45,14 @@ module Bosh::Stemcell
         settings_file: settings_path,
         work_path: work_root
       )
-      stage_runner.configure_and_apply(stage_collection.all_stages)
-      system(rspec_command) || raise('Stemcell specs failed')
 
+      if definition.infrastructure.name == 'dummy'
+        stage_runner.configure_and_apply(stage_collection.dummy_stages)
+      else
+        stage_runner.configure_and_apply(stage_collection.all_stages)
+        system(rspec_command) || raise('Stemcell specs failed')
+      end
+      
       stemcell_file
     end
 

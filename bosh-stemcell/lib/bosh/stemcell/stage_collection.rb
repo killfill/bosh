@@ -13,6 +13,24 @@ module Bosh::Stemcell
       operating_system_stages + agent_stages + infrastructure_stages
     end
 
+    def dummy_stages
+      [ #'os stages'
+        :base_apt,
+        :bosh_users,
+        :bosh_monit,
+        :bosh_ntpdate,
+        :bosh_sudoers,
+        :rsyslog
+      ] + agent_stages +
+      [ #'infra stages'
+        :system_parameters,
+        :bosh_clean,
+        #:bosh_harden, #dont disable root ssh login
+        :bosh_harden_ssh
+      ]
+
+    end
+
     private
 
     def_delegators :@definition, :infrastructure, :operating_system, :agent

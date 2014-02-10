@@ -31,7 +31,7 @@ module Bosh::Agent
       case @config.infrastructure_name
         when "vsphere"
           VSPHERE_DATA_DISK
-        when "aws", "openstack"
+        when "aws", "openstack", "dummy"
           settings = @config.settings
           dev_path = settings['disks']['ephemeral']
           unless dev_path

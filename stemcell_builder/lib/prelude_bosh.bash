@@ -20,3 +20,12 @@ function run_in_bosh_chroot {
     $script
   "
 }
+
+if [ $dont_chroot == 'true' ]; then
+  function run_in_bosh_chroot {
+    local script=$1
+    export PATH=$bosh_dir/bin:$PATH
+    cd $bosh_dir
+    bash -e -c "$script"
+  }
+fi
