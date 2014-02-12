@@ -116,9 +116,10 @@ module Bosh::Cli::Command
 
         stemcell = dig_hash(manifest, 'resources', 'cloud_properties', 'image_id')
 
-        if stemcell.nil?
-          err 'No stemcell provided'
-        end
+        # if stemcell.nil?
+        #   err 'No stemcell provided'
+        # end
+
       end
 
       deployer.check_dependencies
@@ -157,7 +158,7 @@ module Bosh::Cli::Command
 
       confirm_deployment("#{confirmation} #{desc}")
 
-      if File.extname(stemcell) == '.tgz'
+      if stemcell and File.extname(stemcell) == '.tgz'
         stemcell_file = Bosh::Cli::Stemcell.new(stemcell)
 
         say("\nVerifying stemcell...")

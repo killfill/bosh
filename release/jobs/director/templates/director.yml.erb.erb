@@ -260,6 +260,10 @@ cloud:
           vm_metadata_key: <%= vm_metadata_key %>
           description: <%= description %>
 <% end %>
+<% if not @properties.dummy.nil? %>
+  plugin: dummy <% plugin = "dummy" %>
+  properties:
+<% end %>
 <% raise "Could not find cloud plugin" if plugin.nil? %>
     agent:
       ntp: [<%= p('ntp').join(", ") %>]

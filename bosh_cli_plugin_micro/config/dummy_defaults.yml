@@ -1,0 +1,35 @@
+---
+name:
+
+logging:
+  level: INFO
+
+dir:
+
+network:
+  type: manual
+  cloud_properties: {}
+
+env:
+  bosh:
+    password:
+
+cloud:
+  plugin: dummy
+  properties:
+    dir: "/tmp/dummy"
+    dummy:
+      ssh_user: vcap
+    agent:
+      ntp: []
+      blobstore:
+        provider: local
+        options:
+          blobstore_path: /var/vcap/micro_bosh/data/cache
+      mbus:
+
+apply_spec:
+  properties: {}
+  agent:
+    blobstore: {}
+    nats: {}

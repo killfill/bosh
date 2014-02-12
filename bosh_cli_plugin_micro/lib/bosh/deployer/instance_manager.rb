@@ -110,16 +110,20 @@ module Bosh::Deployer
 
       renderer.enter_stage('Deploy Micro BOSH', 11)
 
-      state.stemcell_cid = create_stemcell(stemcell_tgz)
-      state.stemcell_name = File.basename(stemcell_tgz, '.tgz')
-      save_state
-
-      step "Creating VM from #{state.stemcell_cid}" do
-        state.vm_cid = create_vm(state.stemcell_cid)
-        update_vm_metadata(state.vm_cid, { 'Name' => state.name })
-        discover_bosh_ip
+      if stemcell_archive then
+        state.stemcell_cid = create_stemcell(q)
+        state.stemcell_name = File.basename(stemcell_tgz, '.tgz')
+        save_state
       end
-      save_state
+
+      if stemcell_archive then
+        step "Creating VM from #{state.stemcell_cid}" do
+          state.vm_cid = create_vm(state.stemcell_cid)
+          update_vm_metadata(state.vm_cid, { 'Name' => state.name })
+          discover_bosh_ip
+        end
+        save_state
+      end
 
       step 'Waiting for the agent' do
         begin
@@ -340,7 +344,7 @@ module Bosh::Deployer
       attach_missing_disk
       check_persistent_disk
 
-      if state.disk_cid.nil?
+      if state.disk_cid.nil? and state.vm_cid
         create_disk
         attach_disk(state.disk_cid, true)
       elsif persistent_disk_changed?

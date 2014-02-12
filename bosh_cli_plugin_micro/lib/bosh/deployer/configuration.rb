@@ -60,8 +60,13 @@ module Bosh::Deployer
 
     def cloud
       if @cloud.nil?
+        begin
         @cloud = Bosh::Clouds::Provider.create(
-          @cloud_options['plugin'], @cloud_options['properties'])
+          @cloud_options['plugin'], @cloud_options['properties'])          
+        rescue Exception => e
+          puts "Could not create cloud provider: #{e}"
+          raise e
+        end
       end
       @cloud
     end
